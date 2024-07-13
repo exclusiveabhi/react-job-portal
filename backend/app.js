@@ -3,6 +3,10 @@ import dotenv  from 'dotenv'; //app mai import kr li!
 import cors from "cors"
 import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
+import userRouter from "./routes/userRouter.js"
+import jobRouter from "./routes/jobRouter.js"
+import applicationRouter from "./routes/applicationRouter.js"
+import dbConnection from "./database/dbConnection.js"
 
 dotenv.config({path:"./config/config.env"}) //env file ka path diya hai yaha!
 const app = express();
@@ -25,7 +29,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true})) //string ko json mai convert kr deta hai simple!
 
 
+//routes yaha pe hai!
+app.use('/api/v1/user', userRouter)
+app.use('/api/v1/job', jobRouter)
+app.use('/api/v1/application', applicationRouter)
 
+dbConnection();
 
 
 
