@@ -14,7 +14,11 @@ app.use(cors({  //yeh cors ka setup hai!
 }))
 
 app.use(cookieParser()); //cookie yaha use kr liya for auth!
-app.use(fileUpload) //resume upld ke liyee!
+ //resume upld ke liyee!
+app.use(fileUpload({
+useTempFiles: true,
+tempFileDir: '/tmp/',
+}))
 
 //data ko json mai lene ke liyee!
 app.use(express.json());
