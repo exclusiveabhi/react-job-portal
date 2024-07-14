@@ -60,6 +60,9 @@ return await bcrypt.compare(enteredPassword, this.password) //compare krke retur
 //JWT Token Generating here!
 //methods not method
 userSchema.methods.getJWTtoken = function(){ //userSchema ke andar getJWTtoken function hai!
-  return jwt.sign
-
+  return jwt.sign({id: _id} ,process.env.JWT_SECRET_KEY),{
+    expiresIn: process.env.JWT_EXPIRE
+  }
 }
+//export kr diya userSchema!
+export const User = mongoose.model("User", userSchema)
