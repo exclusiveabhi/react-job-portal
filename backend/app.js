@@ -7,6 +7,7 @@ import userRouter from "./routes/userRouter.js"
 import jobRouter from "./routes/jobRouter.js"
 import applicationRouter from "./routes/applicationRouter.js"
 import dbConnection from "./database/dbConnection.js"
+import errorMiddleware from "./middleware/error.js"
 
 dotenv.config({path:"./config/config.env"}) //env file ka path diya hai yaha!
 const app = express();
@@ -37,6 +38,9 @@ app.use('/api/v1/application', applicationRouter)
 dbConnection(); //database ke connection ke liyee call kiya!
 
 
+
+//error middleware end mai use krna hai sequence hai yeh!
+app.use(errorMiddleware)
 
 
 export default app;
