@@ -1,5 +1,5 @@
-import catchAsyncError from "./catchAsyncError.js"
-import errorHandler from "./error.js"
+import {catchAsyncError} from "../middleware/catchAsyncError.js"
+import errorHandler from "../middleware/error.js"
 import User from "../models/userSchema.js"
 export const register = catchAsyncError(async(req,res,next)=>{  //user kya kya krega!
    const {name ,email ,phone, role, password} = req.body; //frontend se yeh 5 data ayega!
@@ -21,7 +21,7 @@ return next(new errorHandler("Provide your complete detail !"))
     res.status(200).json({
       sucess:true,
       message: "User Registered",
-      user, //yaha user [uppar jo banaya wo chla gya]
+      user, //yaha user [uppar jo banaya wo chla/aa gya]
     })
    }
 })
