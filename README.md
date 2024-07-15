@@ -39,7 +39,7 @@ To get a local copy up and running follow these simple steps.
    npm install
    ```
 3. Set up environment variables:
-   - Create a config.env file after creating a config folder in the root directory, containing the following variables:
+   - Create a `config.env` file after creating a `config folder` in the root directory, containing the following variables:
    ```env
    PORT=
    CLOUDINARY_API_KEY=
