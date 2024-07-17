@@ -1,4 +1,4 @@
-const sendToken = (user ,statusCode , res , message)=>{
+export const sendToken = (user ,statusCode , res , message)=>{
     const token = user.getJWTtoken(); //getJWTtoken function ko call kiya userSchema mai define hai yeh!
     const options = {
         expires: new Date(

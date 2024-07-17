@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Enter your password"],
     minLength: [8, "Password must contain minimum 8 character"],
     maxLength: [25, "Password does not contain maximum 25 character"],
+    select: false, //get krne pr hash password show nhi hoga!
   },
   role: {
     type: String,
@@ -60,7 +61,7 @@ return await bcrypt.compare(enteredPassword, this.password) //compare krke retur
 //JWT Token Generating here!
 //methods not method
 userSchema.methods.getJWTtoken = function(){ //userSchema ke andar getJWTtoken function hai!
-  return jwt.sign({id: _id} ,process.env.JWT_SECRET_KEY),{
+  return jwt.sign({id: this._id} ,process.env.JWT_SECRET_KEY),{
     expiresIn: process.env.JWT_EXPIRE
   }
 }
