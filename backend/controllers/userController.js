@@ -52,4 +52,17 @@ export const login = catchAsyncError(async(req , res , next)=>{
     )
   }
   sendToken(user,200 ,res, "User login Sucessfully!")
+  
 }) 
+
+//logout
+export const logout = catchAsyncError(async(req , res , next)=>{
+  res.status(201).cookie("token", "",{ //cookie ko clear/empty kr diya!
+    httpOnly: true,
+    secure: true, //yeh same method cookien mai jwt file mai liye thee!
+    expireIn: new Date(Date.now()),
+  }).json({
+    sucess: true,
+    message:"User Logout sucessfully !",
+  })
+})
