@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'; // Ensure jwt is imported
 
 const isAuthorized = catchAsyncError(async (req, res, next) => {
   const { token } = req.cookies; // Get token from cookies
-console.log(token)
+// console.log(token)
 
   if (!token) {
     // If token is not found
