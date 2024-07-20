@@ -1,6 +1,6 @@
 import app from "./app.js";
 import cloudinary from "cloudinary";
-
+//mai file for nodemon!
 cloudinary.v2.config({
   //cloudinary configuration here!
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
