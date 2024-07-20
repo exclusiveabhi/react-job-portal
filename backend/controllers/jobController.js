@@ -102,3 +102,24 @@ export const updateJob = catchAsyncError(async(req,res,next)=>{
     job,
   })
 })
+
+//Deleting the job!
+
+export const deleteJob = catchAsyncError(async(req, res ,next)=>{
+  const role = req.user.role;
+    if (role == "Job Seeker") {
+      return next(new errorHandler("Not authorized to get the resource !", 400));
+    }
+    const {id} = req.params; //id nikal li!
+
+let job = await Job.findById(id) //jo id params se li wo findBYID me de di !
+    if(!job){
+      return next(new errorHandler("Oops! Job not found !" ,404))
+    }
+    //agar job milgyi then!
+    await job.deleteOne()
+    res.status(200).json({
+      sucess: true,
+      message: "Job delete sucessfully !"
+    })
+})
