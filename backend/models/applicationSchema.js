@@ -5,12 +5,12 @@ const applicationSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please enter your name!"],
-    minLength: [4, "Please enter your valid name!"],
-    maxLength: [50, "Please enter your valid name!"],
+    minLength: [4, "Please enter a valid name!"],
+    maxLength: [50, "Please enter a valid name!"],
   },
   email: {
     type: String,
-    validator: [validator.isEmail, "Please enter your valid email!"],
+    validate: [validator.isEmail, "Please enter a valid email!"],
     required: [true, "Please provide your email!"],
   },
   coverLetter: {
@@ -27,7 +27,7 @@ const applicationSchema = new mongoose.Schema({
   },
   resume: {
     public_id: {
-      type: String, //public_id cloudinary se file upload krne ke liyee!
+      type: String, // Public ID for Cloudinary
       required: [true, "Please provide your resume!"],
     },
     url: {
@@ -37,31 +37,28 @@ const applicationSchema = new mongoose.Schema({
   },
   applicantID: {
     user: {
-      type: mongoose.Schema.Types.ObjectId, //applicant ki id mongodb se aayegi!
-      ref: "User", //refrence mai user ki detail id se!
+      type: mongoose.Schema.Types.ObjectId, // Applicant ID
+      ref: "User",
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["Job Seeker"], // Role for applicant
       required: true,
     },
   },
-  role: {
-    type: String,
-    enum: "Job Seeker", //enum for user Job Seeker hi hona chaiyee wrna apply nhi kr payega!
-    required: true,
-  },
-
   employerID: {
     user: {
-      type: mongoose.Schema.Types.ObjectId, //applicant ki id mongodb se aayegi!
-      ref: "User", //refrence mai user ki detail id se!
+      type: mongoose.Schema.Types.ObjectId, // Employer ID
+      ref: "User",
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["Employer"], // Role for employer
       required: true,
     },
   },
-  role: {
-    type: String,
-    enum: "Job Seeker", //enum for user Job Seeker hi hona chaiyee wrna apply nhi kr payega!
-    required: true,
-  },
-
 });
 
-
-export const Application = mongoose.model("Application" , applicationSchema) //applicationSchema ko Application mai export kra liya!
+export const Application = mongoose.model("Application", applicationSchema);
