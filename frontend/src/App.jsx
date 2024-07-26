@@ -23,7 +23,7 @@ function App() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("/your-api-endpoint", { withCredentials: true });
+        const response = await axios.get("http://localhost:8080/api/v1/user/getuser", { withCredentials: true });
         setuser(response.data.user);
         setisAuthorized(true);
       } catch (error) {
