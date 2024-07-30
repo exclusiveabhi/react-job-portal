@@ -15,6 +15,11 @@ const Login = () => {
   const { isAuthorized, setisAuthorized } = useContext(Context);
 
   const handleLogin = async (e) => {
+    //this condition is change!
+    if (!email || !password || !role) {
+      toast.error("All fields are required !");
+      return;
+    }
     e.preventDefault();
     try {
       const { data } = await axios.post(
@@ -31,9 +36,9 @@ const Login = () => {
       setEmail("");
       setPassword("");
       setRole("");
-      setIsAuthorized(true);
+      setisAuthorized(true);
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message || "An error occurred !"); //an error occurend is chnage!
     }
   };
 
