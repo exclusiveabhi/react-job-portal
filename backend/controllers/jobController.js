@@ -123,3 +123,20 @@ let job = await Job.findById(id) //jo id params se li wo findBYID me de di !
       message: "Job delete sucessfully !"
     })
 })
+
+
+export const getSinglejob = catchAsyncError(async(req, res , next)=>{
+  const {id} = req.params
+  try {
+    const job  = await Job.findById(id)
+    if(!job){
+      return next (new errorHandler("Job not found !", 404))
+    }
+    res.status(200).json({  //response mai status code and job jo find hue hai wo bhej di!
+      sucess: true,
+      job
+    })
+  } catch (error) {
+    return next ( new errorHandler("Invalid details !", 400))
+  }
+})
