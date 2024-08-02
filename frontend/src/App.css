@@ -663,7 +663,7 @@ p {
 
 .jobDetail {
   background: #f1f3f6;
-  padding: 50px 20px;
+  padding: 50px  20px;
 }
 .jobDetail .container {
   max-width: 1500px;
@@ -676,7 +676,7 @@ p {
 .jobDetail .container .banner {
   width: 100%;
   min-height: 767px;
-  padding: 50px 0;
+  padding: 0px 25px;
   display: flex;
   flex-direction: column;
   gap: 25px;
