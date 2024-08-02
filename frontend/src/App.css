@@ -199,7 +199,7 @@ p {
   background: #18191c;
   display: flex;
   justify-content: space-between;
-  padding: 25px 120px;
+  padding: 32px 120px;
   align-items: center;
 }
 .footerShow div {
