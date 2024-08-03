@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
 
@@ -27,18 +27,18 @@ const PostJob = () => {
 
   const handleJobPost = async (e) => {
     e.preventDefault();
-    if (salaryType === "Fixed Salary") {
-      setSalaryFrom("");
-      setSalaryFrom("");
-    } else if (salaryType === "Ranged Salary") {
-      setFixedSalary("");
-    } else {
-      setSalaryFrom("");
-      setSalaryTo("");
-      setFixedSalary("");
-    }
-    await axios
-      .post(
+    try {
+      if (salaryType === "Fixed Salary") {
+        setSalaryFrom("");
+        setSalaryTo("");
+      } else if (salaryType === "Ranged Salary") {
+        setFixedSalary("");
+      } else {
+        setSalaryFrom("");
+        setSalaryTo("");
+        setFixedSalary("");
+      }
+      const response = await axios.post(
         "http://localhost:8080/api/v1/job/post",
         fixedSalary.length >= 4
           ? {
@@ -66,18 +66,18 @@ const PostJob = () => {
             "Content-Type": "application/json",
           },
         }
-      )
-      .then((res) => {
-        toast.success(res.data.message);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
+      );
+      toast.success(response.data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "An error occurred");
+      // console.log(err)
+    }
   };
 
   return (
     <>
       <div className="job_post page">
+        <Toaster />
         <div className="container">
           <h3>POST NEW JOB</h3>
           <form onSubmit={handleJobPost}>
@@ -93,28 +93,30 @@ const PostJob = () => {
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option value="">Select Category</option>
-                <option value="Graphics & Design">Graphics & Design</option>
-                <option value="Mobile App Development">
-                  Mobile App Development
-                </option>
                 <option value="Frontend Web Development">
                   Frontend Web Development
                 </option>
+                <option value="Backend Web Development">
+                  Backend Web Development
+                </option>
+                <option value="UI/UX Design">UI/UX Design</option>
+                <option value="Mobile App Development">
+                  Mobile App Development
+                </option>
+
                 <option value="MERN Stack Development">
                   MERN STACK Development
                 </option>
-                <option value="Account & Finance">Account & Finance</option>
+                <option value="Data Analyst">Data Analyst</option>
+
                 <option value="Artificial Intelligence">
                   Artificial Intelligence
                 </option>
+                <option value="Machine Learning">Machine Learning</option>
                 <option value="Video Animation">Video Animation</option>
                 <option value="MEAN Stack Development">
                   MEAN STACK Development
                 </option>
-                <option value="MEVN Stack Development">
-                  MEVN STACK Development
-                </option>
-                <option value="Data Entry Operator">Data Entry Operator</option>
               </select>
             </div>
             <div className="wrapper">
