@@ -979,6 +979,7 @@ p {
 .myJobs .container {
   min-width: 1500px;
   max-width: 1500px;
+  /* margin-top: 50px; */
   margin: 0 auto;
   align-items: center;
   display: flex;
@@ -1130,6 +1131,7 @@ p {
 @media (max-width: 1520px) {
   .myJobs .container {
     min-width: 100%;
+    margin-top: 50px;
   }
 }
 @media (max-width: 830px) {
