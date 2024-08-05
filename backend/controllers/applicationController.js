@@ -68,7 +68,7 @@ export const postApplication = catchAsyncError(async (req, res, next) => {
     return next(new errorHandler("Resume file is required !"));
   }
   const { resume } = req.files;
-  const allowedFormats = ["image/png", "image/jpg", "image/webp"];
+  const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
   if (!allowedFormats.includes(resume.mimetype)) {
     //mimetype extension type agar yeh nhi hua toh!
     return next(
