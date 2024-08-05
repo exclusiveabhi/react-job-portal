@@ -31,9 +31,15 @@ export const postJob = catchAsyncError(async (req, res, next) => {
   if(!title || !description || !category || ! country || !city || !location){
     return next (new errorHandler("Please provide full job details!",400))
   }
-  if(!salaryFrom || !salaryTo && !fixedSalary){ //yah to from to provide kre user ya fixedSalary provide kre!
-return next(new errorHandler("Please either provide fixed salary or range salary !"))
+
+  //yeh validation condition hata di maine!
+
+  if ((!salaryFrom || !salaryTo) && !fixedSalary) { //now working precedence error tha () yeh lga diye fix ho gya!
+    return next(new errorHandler("Please either provide fixed salary or range salary !"));
   }
+  
+
+
   if(salaryFrom && salaryTo && fixedSalary){
     return next(new errorHandler("Cannot enter fixed salary and ranged salary together !"))
   }
