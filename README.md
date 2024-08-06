@@ -36,6 +36,10 @@ To get a local copy up and running follow these simple steps.
 2. Install NPM packages:
    ```sh
    cd react-job-portal
+   cd backend
+   npm install
+   cd..
+   cd frontend
    npm install
    ```
 3. Set up environment variables:
