@@ -23,7 +23,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:8080/api/v1/user/login",
+        "https://careerconnect-api.vercel.app/api/v1/user/login",
         { email, password, role },
         {
           headers: {

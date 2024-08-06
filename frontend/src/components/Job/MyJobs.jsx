@@ -23,7 +23,7 @@ const MyJobs = () => {
     const fetchJobs = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:8080/api/v1/job/getalljob",
+          "https://careerconnect-api.vercel.app/api/v1/job/getalljob",
           { withCredentials: true }
         );
         // console.log(data)
@@ -50,7 +50,7 @@ const MyJobs = () => {
   const handleUpdateJob = async (jobId) => {
     const updatedJob = myJobs.find((job) => job._id === jobId);
     await axios
-      .put(`http://localhost:8080/api/v1/job/update/${jobId}`, updatedJob, {
+      .put(`https://careerconnect-api.vercel.app/api/v1/job/update/${jobId}`, updatedJob, {
         withCredentials: true,
       })
       .then((res) => {
@@ -65,7 +65,7 @@ const MyJobs = () => {
   // Function For Deleting Job
   const handleDeleteJob = async (jobId) => {
     await axios
-      .delete(`http://localhost:8080/api/v1/job/delete/${jobId}`, {
+      .delete(`https://careerconnect-api.vercel.app/api/v1/job/delete/${jobId}`, {
         withCredentials: true,
       })
       .then((res) => {

@@ -11,7 +11,7 @@ const JobDetails = () => {
   const { isAuthorized, user } = useContext(Context); //context provider se le liya auth!
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/v1/job/${id}`, {  //get kr liya job ko by id!
+    axios.get(`https://careerconnect-api.vercel.app/api/v1/job/${id}`, {  //get kr liya job ko by id!
         withCredentials: true,
       })
       .then((res) => {
