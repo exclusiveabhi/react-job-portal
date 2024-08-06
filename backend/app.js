@@ -13,9 +13,9 @@ dotenv.config({ path: './config/config.env' });
 
 const app = express();
 
-// Use CORS middleware!
+// Use CORS middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'DELETE', 'PUT'],
   credentials: true
 }));
@@ -29,15 +29,14 @@ app.use(fileUpload({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes with version!
+// Routes
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/job', jobRouter);
 app.use('/api/v1/application', applicationRouter);
 
-//Database connection call here!
 dbConnection();
 
-// Error middleware!
+// Error middleware
 app.use(errorMiddleware);
 
 export default app;
