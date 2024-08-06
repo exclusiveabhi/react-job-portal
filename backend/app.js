@@ -15,7 +15,7 @@ const app = express();
 
 // Use CORS middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'http://localhost:5173', //cors ke liye link badlna padega!
   methods: ['GET', 'POST', 'DELETE', 'PUT'],
   credentials: true
 }));
