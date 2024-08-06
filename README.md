@@ -25,7 +25,7 @@ To get a local copy up and running follow these simple steps.
 
 - Node.js installed on your machine with latest version or v22.2.0 above
 - MongoDB Atlas account (or local MongoDB server)
-- Cloudinary account for image storing
+- Cloudinary account for image storage
 
 ### Installation
 
