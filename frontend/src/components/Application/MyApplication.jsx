@@ -80,7 +80,8 @@ const MyApplications = () => {
           {applications.length <= 0 ? (
             <>
               {" "}
-              <h5>No Applications Found !</h5>{" "}
+              <center>
+              <h5>No result !</h5></center>{" "}
             </>
           ) : (
             applications.map((element) => {
@@ -102,7 +103,9 @@ const MyApplications = () => {
           </center>
           {applications.length <= 0 ? (
             <>
+            <center>
               <h5>No Applications Found !</h5>
+              </center>
             </>
           ) : (
             applications.map((element) => {
