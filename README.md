@@ -2,6 +2,8 @@
 
 A comprehensive job portal application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack. This application allows users to browse job listings, apply for jobs, and manage their applications seamlessly.
 
+## This is deployment branch contains deployment code with some changes to main branch.
+
 ## Features
 
 - **User Authentication:** Secure authentication using JWT (JSON Web Tokens) for both job seekers and employers.
@@ -75,7 +77,7 @@ Contributions are what make the open-source community such an amazing place to l
 5. Open a Pull Request (`we will merge within 24 hour`)
 
 
-## Contact
+## Contact Us
 
 Abhishek Rajput - [GitHub](https://github.com/exclusiveabhi)
 
