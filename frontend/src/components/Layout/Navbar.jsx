@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../../main";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { AiOutlineClose } from "react-icons/ai"; // Import the close icon
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
@@ -63,14 +64,12 @@ const Navbar = () => {
                 </Link>
               </li>
             </>
-          ) : (
-            <></>
-          )}
+          ) : null}
 
           <button onClick={handleLogout}>LOGOUT</button>
         </ul>
-        <div className="hamburger">
-          <GiHamburgerMenu onClick={() => setShow(!show)} />
+        <div className="hamburger" onClick={() => setShow(!show)}>
+          {show ? <AiOutlineClose /> : <GiHamburgerMenu />}
         </div>
       </div>
     </nav>
