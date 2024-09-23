@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,5 +21,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
     "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
