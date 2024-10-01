@@ -16,12 +16,16 @@ import MyApplications from "./components/Application/MyApplications";
 import PostJob from "./components/Job/PostJob";
 import NotFound from "./components/NotFound/NotFound";
 import MyJobs from "./components/Job/MyJobs";
+import { useDispatch } from "react-redux";
+import { setAppFetching } from "./redux/app/appSlice"; //imported actions from the appSlice
 
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
+  const dispatch = useDispatch(); // dispatch is used to call an actions... defined in the slices.. 
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        dispatch(setAppFetching(true))
         const response = await axios.get(
           "http://localhost:4000/api/v1/user/getuser",
           {
@@ -30,12 +34,14 @@ const App = () => {
         );
         setUser(response.data.user);
         setIsAuthorized(true);
+        dispatch(setAppFetching(false))
       } catch (error) {
+        dispatch(setAppFetching(false));
         setIsAuthorized(false);
       }
     };
     fetchUser();
-  }, [isAuthorized]);
+  }, [dispatch, isAuthorized]); //need to look at these.. it calling getUser api call twice..)
 
   return (
     <>
