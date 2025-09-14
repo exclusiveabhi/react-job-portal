@@ -90,6 +90,6 @@ Contributions are what make the open-source community such an amazing place to l
 
 ## Contact
 
-Abhishek Rajput - [GitHub](https://github.com/exclusiveabhi)
+Anupam gangwar - [GitHub](https://github.com/anupamgangwar996-star)
 
-Project Link: [https://github.com/exclusiveabhi/react-job-portal.git](https://github.com/exclusiveabhi/react-job-portal.git)
+Project Link: [https://github.com/anupamgangwar/anu-job-portal.git](https://github.com/anupamgangwar996-star/anu-job-portal.git)
