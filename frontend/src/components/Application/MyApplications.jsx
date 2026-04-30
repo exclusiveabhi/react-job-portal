@@ -5,6 +5,15 @@ import toast from "react-hot-toast";
 import { useNavigate, Navigate } from "react-router-dom";
 import ResumeModal from "./ResumeModal";
 
+const getStatusBadge = (status) => {
+  const statusConfig = {
+    pending: { text: "Pending", color: "#ffc107", bgColor: "#fff3cd" },
+    shortlisted: { text: "Shortlisted", color: "#198754", bgColor: "#d1e7dd" },
+    rejected: { text: "Rejected", color: "#dc3545", bgColor: "#f8d7da" },
+  };
+  return statusConfig[status] || statusConfig.pending;
+};
+
 const MyApplications = () => {
   const { user } = useContext(Context);
   const [applications, setApplications] = useState([]);
@@ -14,7 +23,7 @@ const MyApplications = () => {
   const { isAuthorized } = useContext(Context);
   const navigateTo = useNavigate();
 
-  useEffect(() => {
+  const fetchApplications = () => {
     try {
       if (user && user.role === "Employer") {
         axios
@@ -36,7 +45,30 @@ const MyApplications = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     }
+  };
+
+  useEffect(() => {
+    fetchApplications();
   }, [isAuthorized]);
+
+  const updateStatus = (id, status) => {
+    try {
+      axios
+        .put(
+          `http://localhost:4000/api/v1/application/status/${id}`,
+          { status },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          toast.success(res.data.message);
+          fetchApplications();
+        });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   if (!isAuthorized) {
     return <Navigate to="/login" />;
@@ -73,13 +105,14 @@ const MyApplications = () => {
       {user && user.role === "Job Seeker" ? (
         <div className="container">
           <center>
-          <h1>My Applications</h1>
+            <h1>My Applications</h1>
           </center>
           {applications.length <= 0 ? (
             <>
               {" "}
               <center>
-              <h4>No Applications Found</h4></center>{" "}
+                <h4>No Applications Found</h4>
+              </center>{" "}
             </>
           ) : (
             applications.map((element) => {
@@ -97,12 +130,12 @@ const MyApplications = () => {
       ) : (
         <div className="container">
           <center>
-          <h1>Applications From Job Seekers</h1>
+            <h1>Applications From Job Seekers</h1>
           </center>
           {applications.length <= 0 ? (
             <>
-            <center>
-              <h4>No Applications Found</h4>
+              <center>
+                <h4>No Applications Found</h4>
               </center>
             </>
           ) : (
@@ -112,6 +145,7 @@ const MyApplications = () => {
                   element={element}
                   key={element._id}
                   openModal={openModal}
+                  updateStatus={updateStatus}
                 />
               );
             })
@@ -128,6 +162,7 @@ const MyApplications = () => {
 export default MyApplications;
 
 const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
+  const statusBadge = getStatusBadge(element.status);
   return (
     <>
       <div className="job_seeker_card">
@@ -146,6 +181,21 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
           </p>
           <p>
             <span>CoverLetter:</span> {element.coverLetter}
+          </p>
+          <p>
+            <span>Status:</span>{" "}
+            <span
+              style={{
+                padding: "4px 12px",
+                borderRadius: "20px",
+                fontSize: "14px",
+                fontWeight: "bold",
+                color: statusBadge.color,
+                backgroundColor: statusBadge.bgColor,
+              }}
+            >
+              {statusBadge.text}
+            </span>
           </p>
         </div>
         <div className="resume">
@@ -165,7 +215,8 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
   );
 };
 
-const EmployerCard = ({ element, openModal }) => {
+const EmployerCard = ({ element, openModal, updateStatus }) => {
+  const statusBadge = getStatusBadge(element.status);
   return (
     <>
       <div className="job_seeker_card">
@@ -185,6 +236,21 @@ const EmployerCard = ({ element, openModal }) => {
           <p>
             <span>CoverLetter:</span> {element.coverLetter}
           </p>
+          <p>
+            <span>Status:</span>{" "}
+            <span
+              style={{
+                padding: "4px 12px",
+                borderRadius: "20px",
+                fontSize: "14px",
+                fontWeight: "bold",
+                color: statusBadge.color,
+                backgroundColor: statusBadge.bgColor,
+              }}
+            >
+              {statusBadge.text}
+            </span>
+          </p>
         </div>
         <div className="resume">
           <img
@@ -192,6 +258,43 @@ const EmployerCard = ({ element, openModal }) => {
             alt="resume"
             onClick={() => openModal(element.resume.url)}
           />
+        </div>
+        <div
+          className="btn_area"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          <button
+            onClick={() => updateStatus(element._id, "shortlisted")}
+            style={{
+              backgroundColor: "#198754",
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Shortlist
+          </button>
+          <button
+            onClick={() => updateStatus(element._id, "rejected")}
+            style={{
+              backgroundColor: "#dc3545",
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Reject
+          </button>
         </div>
       </div>
     </>
