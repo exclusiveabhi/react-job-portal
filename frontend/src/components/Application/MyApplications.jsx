@@ -217,6 +217,14 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
 
 const EmployerCard = ({ element, openModal, updateStatus }) => {
   const statusBadge = getStatusBadge(element.status);
+  const currentStatus = element.status;
+  
+  const isShortlisted = currentStatus === "shortlisted";
+  const isRejected = currentStatus === "rejected";
+  
+  const shouldShowShortlist = !isShortlisted && !isRejected;
+  const shouldShowReject = !isRejected;
+
   return (
     <>
       <div className="job_seeker_card">
@@ -267,34 +275,38 @@ const EmployerCard = ({ element, openModal, updateStatus }) => {
             gap: "10px",
           }}
         >
-          <button
-            onClick={() => updateStatus(element._id, "shortlisted")}
-            style={{
-              backgroundColor: "#198754",
-              color: "white",
-              border: "none",
-              padding: "10px 20px",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-          >
-            Shortlist
-          </button>
-          <button
-            onClick={() => updateStatus(element._id, "rejected")}
-            style={{
-              backgroundColor: "#dc3545",
-              color: "white",
-              border: "none",
-              padding: "10px 20px",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-          >
-            Reject
-          </button>
+          {shouldShowShortlist && (
+            <button
+              onClick={() => updateStatus(element._id, "shortlisted")}
+              style={{
+                backgroundColor: "#198754",
+                color: "white",
+                border: "none",
+                padding: "10px 20px",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              Shortlist
+            </button>
+          )}
+          {shouldShowReject && (
+            <button
+              onClick={() => updateStatus(element._id, "rejected")}
+              style={{
+                backgroundColor: "#dc3545",
+                color: "white",
+                border: "none",
+                padding: "10px 20px",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              Reject
+            </button>
+          )}
         </div>
       </div>
     </>

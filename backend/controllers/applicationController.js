@@ -185,6 +185,18 @@ export const updateApplicationStatus = catchAsyncErrors(
       );
     }
 
+    if (application.status === status) {
+      return next(
+        new ErrorHandler(`Application is already ${status}`, 400)
+      );
+    }
+
+    if (application.status === "rejected" && status === "shortlisted") {
+      return next(
+        new ErrorHandler("Rejected application cannot be changed to shortlisted", 400)
+      );
+    }
+
     application.status = status;
     await application.save();
 
