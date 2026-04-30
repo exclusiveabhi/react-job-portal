@@ -19,31 +19,30 @@ const MyApplications = () => {
   const [applications, setApplications] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [resumeImageUrl, setResumeImageUrl] = useState("");
+  const [updatingIds, setUpdatingIds] = useState(new Set());
 
   const { isAuthorized } = useContext(Context);
   const navigateTo = useNavigate();
 
-  const fetchApplications = () => {
+  const fetchApplications = async () => {
     try {
+      let res;
       if (user && user.role === "Employer") {
-        axios
-          .get("http://localhost:4000/api/v1/application/employer/getall", {
-            withCredentials: true,
-          })
-          .then((res) => {
-            setApplications(res.data.applications);
-          });
+        res = await axios.get(
+          "http://localhost:4000/api/v1/application/employer/getall",
+          { withCredentials: true }
+        );
       } else {
-        axios
-          .get("http://localhost:4000/api/v1/application/jobseeker/getall", {
-            withCredentials: true,
-          })
-          .then((res) => {
-            setApplications(res.data.applications);
-          });
+        res = await axios.get(
+          "http://localhost:4000/api/v1/application/jobseeker/getall",
+          { withCredentials: true }
+        );
       }
+      setApplications(res.data.applications);
     } catch (error) {
-      toast.error(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message || "Failed to fetch applications";
+      toast.error(errorMessage);
     }
   };
 
@@ -51,22 +50,31 @@ const MyApplications = () => {
     fetchApplications();
   }, [isAuthorized]);
 
-  const updateStatus = (id, status) => {
+  const updateStatus = async (id, status) => {
+    if (updatingIds.has(id)) {
+      return;
+    }
+
+    setUpdatingIds((prev) => new Set(prev).add(id));
+
     try {
-      axios
-        .put(
-          `http://localhost:4000/api/v1/application/status/${id}`,
-          { status },
-          {
-            withCredentials: true,
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.message);
-          fetchApplications();
-        });
+      const res = await axios.put(
+        `http://localhost:4000/api/v1/application/status/${id}`,
+        { status },
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      fetchApplications();
     } catch (error) {
-      toast.error(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message || "Failed to update status";
+      toast.error(errorMessage);
+    } finally {
+      setUpdatingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     }
   };
 
@@ -74,20 +82,20 @@ const MyApplications = () => {
     return <Navigate to="/login" />;
   }
 
-  const deleteApplication = (id) => {
+  const deleteApplication = async (id) => {
     try {
-      axios
-        .delete(`http://localhost:4000/api/v1/application/delete/${id}`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          toast.success(res.data.message);
-          setApplications((prevApplication) =>
-            prevApplication.filter((application) => application._id !== id)
-          );
-        });
+      const res = await axios.delete(
+        `http://localhost:4000/api/v1/application/delete/${id}`,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      setApplications((prevApplication) =>
+        prevApplication.filter((application) => application._id !== id)
+      );
     } catch (error) {
-      toast.error(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message || "Failed to delete application";
+      toast.error(errorMessage);
     }
   };
 
@@ -146,6 +154,7 @@ const MyApplications = () => {
                   key={element._id}
                   openModal={openModal}
                   updateStatus={updateStatus}
+                  isUpdating={updatingIds.has(element._id)}
                 />
               );
             })
@@ -215,7 +224,7 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
   );
 };
 
-const EmployerCard = ({ element, openModal, updateStatus }) => {
+const EmployerCard = ({ element, openModal, updateStatus, isUpdating }) => {
   const statusBadge = getStatusBadge(element.status);
   const currentStatus = element.status;
   
@@ -278,33 +287,37 @@ const EmployerCard = ({ element, openModal, updateStatus }) => {
           {shouldShowShortlist && (
             <button
               onClick={() => updateStatus(element._id, "shortlisted")}
+              disabled={isUpdating}
               style={{
                 backgroundColor: "#198754",
                 color: "white",
                 border: "none",
                 padding: "10px 20px",
                 borderRadius: "5px",
-                cursor: "pointer",
+                cursor: isUpdating ? "not-allowed" : "pointer",
                 fontWeight: "bold",
+                opacity: isUpdating ? 0.7 : 1,
               }}
             >
-              Shortlist
+              {isUpdating ? "Updating..." : "Shortlist"}
             </button>
           )}
           {shouldShowReject && (
             <button
               onClick={() => updateStatus(element._id, "rejected")}
+              disabled={isUpdating}
               style={{
                 backgroundColor: "#dc3545",
                 color: "white",
                 border: "none",
                 padding: "10px 20px",
                 borderRadius: "5px",
-                cursor: "pointer",
+                cursor: isUpdating ? "not-allowed" : "pointer",
                 fontWeight: "bold",
+                opacity: isUpdating ? 0.7 : 1,
               }}
             >
-              Reject
+              {isUpdating ? "Updating..." : "Reject"}
             </button>
           )}
         </div>
