@@ -7,9 +7,9 @@ import ResumeModal from "./ResumeModal";
 
 const getStatusBadge = (status) => {
   const statusConfig = {
-    pending: { text: "Pending", color: "#ffc107", bgColor: "#fff3cd" },
-    shortlisted: { text: "Shortlisted", color: "#198754", bgColor: "#d1e7dd" },
-    rejected: { text: "Rejected", color: "#dc3545", bgColor: "#f8d7da" },
+    pending: { text: "Pending", color: "#856404", bgColor: "#fff3cd" },
+    shortlisted: { text: "Shortlisted", color: "#0f5132", bgColor: "#d1e7dd" },
+    rejected: { text: "Rejected", color: "#842029", bgColor: "#f8d7da" },
   };
   return statusConfig[status] || statusConfig.pending;
 };

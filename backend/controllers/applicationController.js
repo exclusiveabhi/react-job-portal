@@ -148,6 +148,11 @@ export const jobseekerDeleteApplication = catchAsyncErrors(
     if (!application) {
       return next(new ErrorHandler("Application not found!", 404));
     }
+    if (application.applicantID.user.toString() !== req.user._id.toString()) {
+      return next(
+        new ErrorHandler("You are not authorized to delete this application.", 403)
+      );
+    }
     await application.deleteOne();
     res.status(200).json({
       success: true,
