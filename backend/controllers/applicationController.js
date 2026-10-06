@@ -155,3 +155,55 @@ export const jobseekerDeleteApplication = catchAsyncErrors(
     });
   }
 );
+
+export const updateApplicationStatus = catchAsyncErrors(
+  async (req, res, next) => {
+    const { role } = req.user;
+    if (role === "Job Seeker") {
+      return next(
+        new ErrorHandler("Job Seeker not allowed to access this resource.", 400)
+      );
+    }
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const allowedStatuses = ["shortlisted", "rejected"];
+    if (!allowedStatuses.includes(status)) {
+      return next(
+        new ErrorHandler(`Invalid status. Allowed statuses: ${allowedStatuses.join(", ")}`, 400)
+      );
+    }
+
+    const application = await Application.findById(id);
+    if (!application) {
+      return next(new ErrorHandler("Application not found!", 404));
+    }
+
+    if (application.employerID.user.toString() !== req.user._id.toString()) {
+      return next(
+        new ErrorHandler("You are not authorized to update this application.", 403)
+      );
+    }
+
+    if (application.status === status) {
+      return next(
+        new ErrorHandler(`Application is already ${status}`, 400)
+      );
+    }
+
+    if (application.status === "rejected" && status === "shortlisted") {
+      return next(
+        new ErrorHandler("Rejected application cannot be changed to shortlisted", 400)
+      );
+    }
+
+    application.status = status;
+    await application.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Application status updated to ${status}`,
+      application,
+    });
+  }
+);
